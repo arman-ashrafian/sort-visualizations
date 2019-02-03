@@ -29,7 +29,7 @@ class Sort {
                     this.bars[j + 1].height = this.bars[j].height
                     this.bars[j].height = temp
                 }
-                await sleep(5)
+                await sleep(1)
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.bars.forEach((b, index) => {
                     if (index == j || index == j + 1) {
@@ -40,12 +40,12 @@ class Sort {
                 });
             }
         }
-        this.restart()
+        this.initBars()
+        this.bubbleSort()
     }
 
     async insertionSort() {
         for (let i = 1; i < this.bars.length; i++) {
-            console.log()
             let k = this.bars[i].height
 
             // shift elements greater than k
@@ -63,19 +63,19 @@ class Sort {
             this.bars[j + 1].height = k
 
         }
-
+        this.initBars()
+        this.insertionSort()
     }
 
-    async restart() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        this.initBars()
-        this.run()
+    // split the array into halves and recursively merge them 
+    async mergeSort() {
+        //TODO: make dis shit
     }
 
     initBars() {
         this.bars = []
         // create bars
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 100; i++) {
             let r = Math.floor(Math.random() * HEIGHT + 1)
             this.bars.push(new Bar(i, r))
         }
@@ -89,12 +89,11 @@ class Sort {
 
 }
 
-
 class Bar {
     constructor(pos, val) {
         this.height = val
         this.pos = pos
-        this.w = Math.floor(WIDTH / 200)
+        this.w = Math.floor(WIDTH / 100)
     }
     draw(ctx) {
         ctx.fillStyle = 'rgb(200,0,0)'
