@@ -1,45 +1,88 @@
-const HEIGHT = 500
-const WIDTH = 500
+const WIDTH = window.innerWidth 
+const HEIGHT = Math.floor(window.innerHeight/2) 
+
+window.onload = function() {
+    let bs = new BubbleSort()
+    bs.run()
+
+}
+
+class BubbleSort { 
+    constructor() {
+        this.isRunning = false
+        this.canvas = document.getElementById("bubbleSortCanvas")
+        this.ctx = this.canvas.getContext('2d')
+        this.bars = []
+        
+        this.ctx.canvas.width = WIDTH
+        this.ctx.canvas.height = HEIGHT
+        
+        this.initBars()
+    }
+
+    async run() {
+        for(let i = 0; i < this.bars.length; i++) {
+            for(let j = 0; j < this.bars.length - i - 1; j++) {
+                if(this.bars[j].height > this.bars[j+1].height) {
+                    let temp = this.bars[j+1].height
+                    this.bars[j+1].height = this.bars[j].height
+                    this.bars[j].height = temp
+                }
+                await sleep(20)
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.bars.forEach((b,index) => {
+                    if(index == j || index == j+1) {
+                        b.highlight(this.ctx)
+                    } else {
+                        b.draw(this.ctx)
+                    }
+                });
+            }
+        }
+        this.restart()
+    }
+
+    async restart() {
+        this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)
+        this.initBars()
+        this.run()
+    }
+
+    initBars() {
+        this.bars = []
+        // create bars
+        for(let i = 0; i < 100; i++) {
+            let r = Math.floor(Math.random() * HEIGHT + 1)
+            this.bars.push(new Bar(i, r))
+        }
+
+        // draw bars
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.bars.forEach(b => {
+            b.draw(this.ctx)
+        });
+    }
+
+}
+
+class Bar {
+    constructor(pos,val) {
+        this.height = val
+        this.pos = pos
+        this.w = Math.floor(WIDTH/100)
+    }
+    draw(ctx) {
+        ctx.fillStyle = 'rgb(200,0,0)'
+        ctx.fillRect(this.pos*this.w,HEIGHT-this.height,this.w,this.height)
+    }
+
+    highlight(ctx) {
+        ctx.fillStyle = 'rgb(255,255,100)'
+        ctx.fillRect(this.pos*this.w,HEIGHT-this.height,this.w,this.height)
+    }
+}
 
 // async sleep
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-window.onload = async function() {
-    let canvas = document.getElementById("canvas")
-    let ctx = canvas.getContext('2d')
-
-    bars = []
-    
-    // create bars
-    for(let i = 0; i < 100; i++) {
-        let r = Math.floor(Math.random() * 400 + 1)
-        bars.push(new Bar(i, r))
-    }
-
-    for(let i = 0; i < bars.length; i++) {
-        for(let j = 0; j < bars.length - i - 1; j++) {
-            if(bars[j].height > bars[j+1].height) {
-                let temp = bars[j+1].height
-                bars[j+1].height = bars[j].height
-                bars[j].height = temp
-            }
-            await sleep(10)
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            bars.forEach(bar => {
-                bar.draw(ctx)
-            });
-        }
-    }
-}
-
-function Bar(pos, val) {
-    this.height = val
-    this.pos = pos
-
-    this.draw = function(ctx) {
-        ctx.fillStyle = 'rgb(200,0,0)'
-        ctx.fillRect(this.pos*10,HEIGHT-this.height,10,this.height)
-    }
 }
