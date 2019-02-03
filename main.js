@@ -1,5 +1,5 @@
-const WIDTH = window.innerWidth 
-const HEIGHT = Math.floor(window.innerHeight/2) 
+let WIDTH = window.innerWidth
+let HEIGHT = Math.floor(window.innerHeight/2) 
 
 window.onload = function() {
     let bs = new BubbleSort()
@@ -28,7 +28,7 @@ class BubbleSort {
                     this.bars[j+1].height = this.bars[j].height
                     this.bars[j].height = temp
                 }
-                await sleep(20)
+                await sleep(5)
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.bars.forEach((b,index) => {
                     if(index == j || index == j+1) {
@@ -51,7 +51,7 @@ class BubbleSort {
     initBars() {
         this.bars = []
         // create bars
-        for(let i = 0; i < 100; i++) {
+        for(let i = 0; i < 200; i++) {
             let r = Math.floor(Math.random() * HEIGHT + 1)
             this.bars.push(new Bar(i, r))
         }
@@ -69,7 +69,7 @@ class Bar {
     constructor(pos,val) {
         this.height = val
         this.pos = pos
-        this.w = Math.floor(WIDTH/100)
+        this.w = Math.floor(WIDTH/200)
     }
     draw(ctx) {
         ctx.fillStyle = 'rgb(200,0,0)'

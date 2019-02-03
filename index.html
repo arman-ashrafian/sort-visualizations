@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +10,46 @@
     <script src="main.js"></script>
 
     <style>
-    #canvas {
-        border: 1px solid black;
-    } 
-    h2 {
-        border: solid black 1px;
-        text-align: center;
-    }
+        #canvas {
+            border: 1px solid black;
+        }
+
+        h2 {
+            border: solid black 1px;
+            text-align: center;
+        }
     </style>
 </head>
+
 <body>
 
     <h1>sorting algorithms</h1>
     <h2>bubble sort</h2>
-    <canvas id="bubbleSortCanvas" ></canvas>
+    <canvas id="bubbleSortCanvas"></canvas>
+    <p>
+        <strong>Average Time Complexity:</strong> Θ(n^2)
+    </p>
+
+    <p>
+        <strong>psuedocode:</strong>
+        <pre>
+procedure bubbleSort( A : list of sortable items )
+    n = length(A)
+    repeat
+        swapped = false
+        for i = 1 to n-1 inclusive do
+            /* if this pair is out of order */
+            if A[i-1] > A[i] then
+                /* swap them and remember something changed */
+                swap( A[i-1], A[i] )
+                swapped = true
+            end if
+        end for
+    until not swapped
+end procedure
+        </pre>
+    </p>
 
 </body>
+
 </html>
