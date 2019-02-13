@@ -7,6 +7,9 @@ window.onload = function () {
 
     let is = new Sort('insertionSortCanvas')
     is.insertionSort()
+
+    let ms = new Sort('mergeSortCanvas')
+    ms.mergeSort()
 }
 
 class Sort {
@@ -66,10 +69,48 @@ class Sort {
         this.initBars()
         this.insertionSort()
     }
+    async mergeSort() {
+        this.bars = await this.actualMergeSort(this.bars)
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.bars.forEach((b, i) => {
+            b.pos = i
+            b.draw(this.ctx)
+        })
+    }
 
     // split the array into halves and recursively merge them 
-    async mergeSort() {
-        //TODO: make dis shit
+    async actualMergeSort(arr) {
+        if(arr.length < 2) {
+            return arr
+        }
+
+        await sleep(10)
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        arr.forEach((b) => {
+            b.draw(this.ctx)
+        })
+
+        let mid = Math.floor(arr.length/2)
+        let left = arr.slice(0,mid)
+        let right = arr.slice(mid)
+
+        return await this.merge(await this.actualMergeSort(left), await this.actualMergeSort(right))
+    }
+
+    async merge(left, right) {
+        let result = []
+        let l = 0
+        let r = 0
+
+        while(l < left.length && r < right.length) {
+            if(left[l].height < right[r].height) {
+                result.push(left[l++])
+            } else {
+                result.push(right[r++])
+            }
+        }
+
+        return result.concat(left.slice(l), right.slice(r))
     }
 
     initBars() {
